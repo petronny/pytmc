@@ -71,10 +71,10 @@ def frame(data, opcode=0x01):
         frame += struct.pack('!BQ', 0x80 | 127, length)
 
     # Clients must apply a 32-bit mask to all data sent.
-    mask = list(map(ord, os.urandom(4)))
+    mask = list(map(int, os.urandom(4)))
     frame += struct.pack('!BBBB', *mask)
     # Mask each byte of data using a byte from the mask.
-    msg = [ord(c) ^ mask[i % 4] for i, c in enumerate(data)]
+    msg = [int(c) ^ mask[i % 4] for i, c in enumerate(data)]
     frame += struct.pack('!' + 'B' * length, *msg)
     return frame
 
@@ -111,7 +111,7 @@ class WebSocket(object):
         self._fragmented_message_opcode = None
         self._waiting = None
 
-        self.key = base64.b64encode(os.urandom(16))
+        self.key = base64.b64encode(os.urandom(16)).decode('utf-8')
         self.stream = iostream.IOStream(socket.socket())
         self.stream.connect((self.host, self.port), self._on_connect)
 
@@ -172,10 +172,12 @@ class WebSocket(object):
             request += '\r\n' + self.headers
         request += '\r\n\r\n'
         self.stream.write(tornado.escape.utf8(request))
-        self.stream.read_until('\r\n\r\n', self._on_headers)
+        self.stream.read_until(b'\r\n\r\n', self._on_headers)
 
     def _on_headers(self, data):
-        first, _, rest = data.partition('\r\n')
+        first, _, rest = data.partition(b'\r\n')
+        first = first.decode('utf-8')
+        rest = rest.decode('utf-8')
         headers = HTTPHeaders.parse(rest)
         # Expect HTTP 101 response.
         if not re.match('HTTP/[^ ]+ 101', first):
@@ -187,7 +189,7 @@ class WebSocket(object):
             # Expect Upgrade: websocket.
             assert headers['Upgrade'].lower() == 'websocket'
             # Sec-WebSocket-Accept should be derived from our key.
-            accept = base64.b64encode(hashlib.sha1(self.key + MAGIC).digest())
+            accept = base64.b64encode(hashlib.sha1((self.key + MAGIC).encode('utf-8')).digest()).decode('utf-8')
             assert headers['Sec-WebSocket-Accept'] == accept
 
             self._async_callback(self.on_open)()
@@ -327,12 +329,12 @@ def main(url, message='hello, world'):
 
         def on_open(self):
             self.ping()
-            print('>>', message)
+            print('>> ' + message)
             self.write_message(message)
 
         def on_message(self, data):
-            print('on_message:', data)
-            msg = input('>> ')
+            print('on_message: ' + data)
+            msg = eval(input('>> '))
             if msg == 'ping':
                 self.ping()
             elif msg == 'die':

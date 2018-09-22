@@ -167,7 +167,7 @@ class WriteBuffer(bytearray):
 
     def string(self, v):
         if len(v) > 0:
-            self.extend(pack('<I%ds' % len(v), len(v), str(v)))
+            self.extend(pack('<I%ds' % len(v), len(v), v.encode('utf-8')))
         else:
             self.extend(pack('<B', 0))
 

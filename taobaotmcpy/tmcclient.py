@@ -18,7 +18,7 @@ logger = logging.getLogger('taobao-tmc')
 
 class TmcClient(WebSocket, Event):
     def __init__(self, url, app_key, app_secret, group_name='default', query_message_interval=50, heartbeat_interval=30,
-                 sdk_version='top-sdk-java-201403304', *args, **kwargs):
+                 sdk_version='top-sdk-java-20180730', *args, **kwargs):
         super(TmcClient, self).__init__(url, *args, **kwargs)
         Event.__init__(self)
 
@@ -57,7 +57,7 @@ class TmcClient(WebSocket, Event):
         keys.sort()
 
         params = "%s%s%s" % (self.app_secret, str().join('%s%s' % (key, params[key]) for key in keys), self.app_secret)
-        return md5(params).hexdigest().upper()
+        return md5(params.encode('utf-8')).hexdigest().upper()
 
     def on_open(self):
         timestamp = int(round(time.time() * 1000))
