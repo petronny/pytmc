@@ -1,8 +1,9 @@
 # coding: utf-8
 
 import sys
+import imp
 
-reload(sys)
+imp.reload(sys)
 sys.setdefaultencoding('utf-8')
 
 import struct
@@ -20,35 +21,35 @@ message = '020205002400000064326333653836342d636636642d343838382d386662332d35626
 
 bs = unhexlify(message)
 
-print struct.unpack_from('<B', bs), 0, '1'
-print struct.unpack_from('<B', bs, struct.calcsize('<B')), struct.calcsize('<B'), '2'
-print struct.unpack_from('<h', bs, struct.calcsize('<2B')), struct.calcsize('<2B'), '3'
-print struct.unpack_from('<i', bs, struct.calcsize('<2Bh')), struct.calcsize('<2Bh'), '4'
-print struct.unpack_from('<36s', bs, struct.calcsize('<2Bhi')), struct.calcsize('<2Bhi'), '5'
+print(struct.unpack_from('<B', bs), 0, '1')
+print(struct.unpack_from('<B', bs, struct.calcsize('<B')), struct.calcsize('<B'), '2')
+print(struct.unpack_from('<h', bs, struct.calcsize('<2B')), struct.calcsize('<2B'), '3')
+print(struct.unpack_from('<i', bs, struct.calcsize('<2Bh')), struct.calcsize('<2Bh'), '4')
+print(struct.unpack_from('<36s', bs, struct.calcsize('<2Bhi')), struct.calcsize('<2Bhi'), '5')
 
-print struct.unpack_from('<h', bs, struct.calcsize('<2Bhi36s')), struct.calcsize('<2Bhi36s'), '6'
-print struct.unpack_from('<i', bs, struct.calcsize('<2Bhi36sh')), struct.calcsize('<2Bhi36sh'), '7'
-print struct.unpack_from('<5s', bs, struct.calcsize('<2Bhi36shi')), struct.calcsize('<2Bhi36shi'), '8'
-print struct.unpack_from('<b', bs, struct.calcsize('<2Bhi36shi5s')), struct.calcsize('<2Bhi36shi5s'), '9'
-print struct.unpack_from('<i', bs, struct.calcsize('<2Bhi36shi5sb')), struct.calcsize('<2Bhi36shi5sb'), '10'
-print struct.unpack_from('<26s', bs, struct.calcsize('<2Bhi36shi5sbi')), struct.calcsize('<2Bhi36shi5sbi'), '11'
+print(struct.unpack_from('<h', bs, struct.calcsize('<2Bhi36s')), struct.calcsize('<2Bhi36s'), '6')
+print(struct.unpack_from('<i', bs, struct.calcsize('<2Bhi36sh')), struct.calcsize('<2Bhi36sh'), '7')
+print(struct.unpack_from('<5s', bs, struct.calcsize('<2Bhi36shi')), struct.calcsize('<2Bhi36shi'), '8')
+print(struct.unpack_from('<b', bs, struct.calcsize('<2Bhi36shi5s')), struct.calcsize('<2Bhi36shi5s'), '9')
+print(struct.unpack_from('<i', bs, struct.calcsize('<2Bhi36shi5sb')), struct.calcsize('<2Bhi36shi5sb'), '10')
+print(struct.unpack_from('<26s', bs, struct.calcsize('<2Bhi36shi5sbi')), struct.calcsize('<2Bhi36shi5sbi'), '11')
 
-print struct.unpack_from('<h', bs, struct.calcsize('<2Bhi36shi5sbi26s')), '12'
-print struct.unpack_from('<i', bs, struct.calcsize('<2Bhi36shi5sbi26sh')), '13'
-print struct.unpack_from('<6s', bs, struct.calcsize('<2Bhi36shi5sbi26shi')), '14'
-print struct.unpack_from('<b', bs, struct.calcsize('<2Bhi36shi5sbi26shi6s')), struct.calcsize(
-    '<2Bhi36shi5sbi26shi6s'), '15'
-print struct.unpack_from('<q', bs, struct.calcsize('<2Bhi36shi5sbi26shi6sb')), struct.calcsize(
-    '<2Bhi36shi5sbi26shi6sb'), '16'
+print(struct.unpack_from('<h', bs, struct.calcsize('<2Bhi36shi5sbi26s')), '12')
+print(struct.unpack_from('<i', bs, struct.calcsize('<2Bhi36shi5sbi26sh')), '13')
+print(struct.unpack_from('<6s', bs, struct.calcsize('<2Bhi36shi5sbi26shi')), '14')
+print(struct.unpack_from('<b', bs, struct.calcsize('<2Bhi36shi5sbi26shi6s')), struct.calcsize(
+    '<2Bhi36shi5sbi26shi6s'), '15')
+print(struct.unpack_from('<q', bs, struct.calcsize('<2Bhi36shi5sbi26shi6sb')), struct.calcsize(
+    '<2Bhi36shi5sbi26shi6sb'), '16')
 
-print struct.unpack_from('<H', bs, struct.calcsize('<2Bhi36shi5sbi26shi6sbq')), '17'
-print struct.unpack_from('<i', bs, struct.calcsize('<2Bhi36shi5sbi26shi6sbqH')), '18'
-print struct.unpack_from('<6s', bs, struct.calcsize('<2Bhi36shi5sbi26shi6sbqHi')), '18'
-print struct.unpack_from('<B', bs, struct.calcsize('<2Bhi36shi5sbi26shi6sbqHi6s')), '19'
-print struct.unpack_from('<B', bs, struct.calcsize('<2Bhi36shi5sbi26shi6sbqHi6sB')), '20'
+print(struct.unpack_from('<H', bs, struct.calcsize('<2Bhi36shi5sbi26shi6sbq')), '17')
+print(struct.unpack_from('<i', bs, struct.calcsize('<2Bhi36shi5sbi26shi6sbqH')), '18')
+print(struct.unpack_from('<6s', bs, struct.calcsize('<2Bhi36shi5sbi26shi6sbqHi')), '18')
+print(struct.unpack_from('<B', bs, struct.calcsize('<2Bhi36shi5sbi26shi6sbqHi6s')), '19')
+print(struct.unpack_from('<B', bs, struct.calcsize('<2Bhi36shi5sbi26shi6sbqHi6sB')), '20')
 
 from taobaotmcpy.messageio import reader
 
 message = reader(bs)
 
-print message.content
+print(message.content)

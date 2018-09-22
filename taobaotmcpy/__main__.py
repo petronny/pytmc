@@ -6,7 +6,7 @@ import logging
 from tornado import ioloop
 from tornado.options import parse_command_line
 
-from tmcclient import TmcClient
+from .tmcclient import TmcClient
 
 
 if __name__ == '__main__':

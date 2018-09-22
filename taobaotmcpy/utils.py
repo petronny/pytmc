@@ -1,8 +1,8 @@
 # coding: utf-8
 __author__ = 'baocaixiong'
 
-from message import ConfirmMessage, QueryMessage
-from messageio import writer
+from .message import ConfirmMessage, QueryMessage
+from .messageio import writer
 
 
 def confirm_message(message_id, token):

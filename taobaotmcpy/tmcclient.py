@@ -7,11 +7,11 @@ from hashlib import md5
 
 from tornado import ioloop
 
-from event import Event
-from message import Message
-from messageio import reader, writer
-from tornadowebsocket import WebSocket
-from utils import confirm_message, query_message
+from .event import Event
+from .message import Message
+from .messageio import reader, writer
+from .tornadowebsocket import WebSocket
+from .utils import confirm_message, query_message
 
 logger = logging.getLogger('taobao-tmc')
 
@@ -24,10 +24,10 @@ class TmcClient(WebSocket, Event):
 
         self.on('on_init', lambda: logger.info('WebSocket Start Connect: %s@%s' % (url, group_name)))
 
-        assert isinstance(url, (str, unicode)) and len(url) > 0
-        assert isinstance(app_key, (str, unicode)) and len(app_key) > 0
-        assert isinstance(app_secret, (str, unicode)) and len(app_secret) > 0
-        assert isinstance(group_name, (str, unicode)) and len(group_name) > 0
+        assert isinstance(url, str) and len(url) > 0
+        assert isinstance(app_key, str) and len(app_key) > 0
+        assert isinstance(app_secret, str) and len(app_secret) > 0
+        assert isinstance(group_name, str) and len(group_name) > 0
         assert isinstance(query_message_interval, int) and 0 < query_message_interval < 60
         assert isinstance(heartbeat_interval, int) and 0 < heartbeat_interval < 60
 
@@ -53,7 +53,7 @@ class TmcClient(WebSocket, Event):
             'timestamp': timestamp,
         }
 
-        keys = params.keys()
+        keys = list(params.keys())
         keys.sort()
 
         params = "%s%s%s" % (self.app_secret, str().join('%s%s' % (key, params[key]) for key in keys), self.app_secret)
@@ -103,7 +103,7 @@ class TmcClient(WebSocket, Event):
             self.fire('on_confirm_message', message_id=message.content.get('id'))
             self.fire('on_message', message=message)
         elif message.message_type == 3:  # 主动拉取消息返回
-            print data
+            print(data)
 
     def on_ping(self):
         logger.debug('[%s]Received Ping.' % self.group_name)

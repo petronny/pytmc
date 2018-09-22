@@ -12,19 +12,19 @@ querenlianjie = '020104000100000005002400000035346537386461382d643633362d3434626
 
 bs = unhexlify(querenlianjie)
 
-print len(bs)
-print len(querenlianjie)
+print(len(bs))
+print(len(querenlianjie))
 
 # b = Buffer(unhexlify(querenlianjie_))
 # print b.read_int()
 
-print struct.unpack('<2Bhihi36sh', bs)
-print len(''.join([str(i) for i in struct.unpack('<2Bhihi36sh', bs)]))
+print(struct.unpack('<2Bhihi36sh', bs))
+print(len(''.join([str(i) for i in struct.unpack('<2Bhihi36sh', bs)])))
 
 from taobaotmcpy.messageio import reader
 
 message = reader(bs)
-print message
-print message.protocol_version
-print message.message_type
-print message.token
+print(message)
+print(message.protocol_version)
+print(message.message_type)
+print(message.token)

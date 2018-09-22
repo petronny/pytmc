@@ -3,4 +3,4 @@ __author__ = 'baocaixiong'
 
 __all__ = ['TmcClient']
 
-from tmcclient import TmcClient
+from .tmcclient import TmcClient

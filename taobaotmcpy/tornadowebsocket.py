@@ -22,7 +22,7 @@ import socket
 import struct
 import sys
 import time
-import urlparse
+import urllib.parse
 
 import tornado.escape
 from tornado import ioloop, iostream
@@ -71,7 +71,7 @@ def frame(data, opcode=0x01):
         frame += struct.pack('!BQ', 0x80 | 127, length)
 
     # Clients must apply a 32-bit mask to all data sent.
-    mask = map(ord, os.urandom(4))
+    mask = list(map(ord, os.urandom(4)))
     frame += struct.pack('!BBBB', *mask)
     # Mask each byte of data using a byte from the mask.
     msg = [ord(c) ^ mask[i % 4] for i, c in enumerate(data)]
@@ -89,14 +89,14 @@ class WebSocket(object):
         if not self.io_loop:
             self.io_loop = ioloop.IOLoop.instance()
 
-        self.url = urlparse.urlparse(url)
+        self.url = urllib.parse.urlparse(url)
         self.host = self.url.hostname
         self.port = self.url.port or ports[self.url.scheme]
         self.path = self.url.path or '/'
 
         if extra_headers is not None and len(extra_headers) > 0:
             header_set = []
-            for k, v in extra_headers.iteritems():
+            for k, v in extra_headers.items():
                 header_set.append("%s: %s" % (k, v))
             self.headers = "\r\n".join(header_set)
         else:
@@ -327,12 +327,12 @@ def main(url, message='hello, world'):
 
         def on_open(self):
             self.ping()
-            print '>>', message
+            print('>>', message)
             self.write_message(message)
 
         def on_message(self, data):
-            print 'on_message:', data
-            msg = raw_input('>> ')
+            print('on_message:', data)
+            msg = input('>> ')
             if msg == 'ping':
                 self.ping()
             elif msg == 'die':
@@ -341,10 +341,10 @@ def main(url, message='hello, world'):
                 self.write_message(msg)
 
         def on_close(self):
-            print 'on_close'
+            print('on_close')
 
         def on_pong(self):
-            print 'on_pong'
+            print('on_pong')
 
     ws = HelloSocket(url)
     try:

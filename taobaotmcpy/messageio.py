@@ -8,8 +8,8 @@ import types
 from datetime import datetime
 from struct import calcsize, unpack_from, pack
 
-from messagetype import MessageType
-from message import Message
+from .messagetype import MessageType
+from .message import Message
 
 
 class _Reader(object):
@@ -124,7 +124,7 @@ class _Writer(object):
             stream.string(message.token)
 
         if len(message.content) > 0:
-            for key, value in message.content.items():
+            for key, value in list(message.content.items()):
                 cls._write_custom_header(stream, key, value)
 
         stream.int16(MessageType.HeaderType.endOfHeaders)
@@ -142,16 +142,16 @@ class _Writer(object):
         if not value:
             stream.byte(MessageType.ValueFormat.void)
 
-        if isinstance(value, (types.IntType, types.LongType)) and value < ((1 << 8) - 1):
+        if isinstance(value, int) and value < ((1 << 8) - 1):
             stream.byte(MessageType.ValueFormat.byte)
             stream.byte(value)
-        elif isinstance(value, (types.IntType, types.LongType)) and value < ((1 << 16) - 1):
+        elif isinstance(value, int) and value < ((1 << 16) - 1):
             stream.byte(MessageType.ValueFormat.int16)
             stream.int16(value)
-        elif isinstance(value, (types.IntType, types.LongType)) and value < ((1 << 32) - 1):
+        elif isinstance(value, int) and value < ((1 << 32) - 1):
             stream.byte(MessageType.ValueFormat.int32)
             stream.int32(value)
-        elif isinstance(value, (types.IntType, types.LongType)) and value < ((1 << 64) - 1):
+        elif isinstance(value, int) and value < ((1 << 64) - 1):
             stream.byte(MessageType.ValueFormat.int64)
             stream.int64(value)
         else:
