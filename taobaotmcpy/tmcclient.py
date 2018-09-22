@@ -126,7 +126,7 @@ class TmcClient(WebSocket, Event):
         logger.debug('[%s]Confirm Message: %s' % (self.group_name, message_id))
         self.write_binary(cm)
 
-    def _start_query_loop(self):
+    def _start_query_loop(self, **kwargs):
         """ 开启主动拉取消息循环 """
 
         def _query_message_loop(_self, group_name, _token):
@@ -137,7 +137,7 @@ class TmcClient(WebSocket, Event):
             return _
 
         periodic = ioloop.PeriodicCallback(_query_message_loop(self, self.group_name, self.token),
-                                           self.query_message_interval * 1000, io_loop=self.io_loop)
+                                           self.query_message_interval * 1000)
 
         logger.info('[%s]Start Query Message Interval.' % self.group_name)
 

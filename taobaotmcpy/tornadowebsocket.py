@@ -112,7 +112,7 @@ class WebSocket(object):
         self._waiting = None
 
         self.key = base64.b64encode(os.urandom(16))
-        self.stream = iostream.IOStream(socket.socket(), self.io_loop)
+        self.stream = iostream.IOStream(socket.socket())
         self.stream.connect((self.host, self.port), self._on_connect)
 
     def on_open(self):
