@@ -13,7 +13,7 @@ if __name__ == '__main__':
     cli = parse_command_line()
 
     logging.basicConfig(level=logging.DEBUG)
-    ws = TmcClient('ws://mc.api.taobao.com/', '1021737885', 'sandboxbbf5579605d7936422c11af0e', 'default',
+    ws = TmcClient('ws://mc.api.taobao.com/', 'app_key', 'app_secret', 'default',
                    query_message_interval=50)
 
     def print1():
@@ -22,9 +22,8 @@ if __name__ == '__main__':
     ws.on("on_open", print1)
 
     try:
-        ioloop.IOLoop.instance().start()
+        ioloop.IOLoop.current().run_sync(ws.start)
     except KeyboardInterrupt:
         pass
     finally:
-        ws.close()
-
+        ioloop.IOLoop.current().run_sync(ws.close)

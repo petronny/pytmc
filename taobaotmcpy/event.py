@@ -1,7 +1,4 @@
-# coding: utf-8
-
-__author__ = 'baocaixiong'
-
+import inspect
 from collections import defaultdict
 
 
@@ -30,6 +27,9 @@ class Event(object):
 
         self.__listeners[name].remove(callback)
 
-    def fire(self, name, *args, **kwargs):
+    async def fire(self, name, *args, **kwargs):
         for ev in self.__listeners[name]:
-            ev(*args, **kwargs)
+            if inspect.iscoroutinefunction(ev):
+                await ev(*args, **kwargs)
+            else:
+                ev(*args, **kwargs)
