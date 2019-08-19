@@ -40,7 +40,7 @@ class Protocol(websockets.WebSocketClientProtocol):
 class Client:
 
     #sdk='top-sdk-java-20180730'
-    sdk='pytmc-20190819'
+    sdk = 'pytmc-20190819'
 
     def __init__(self, url='ws://mc.api.taobao.com/', app_key=None, app_secret=None, group='default', protocol=Protocol, query_message_interval=50):
         self.url = url
