@@ -36,7 +36,7 @@ class MyClient(Client):
 
 * 使用 `asyncio` 启动子类实例中的 `start()` 函数
 
-````
+```
 client = MyClient(app_key='app_key', app_secret='app_secret', group='default')
 asyncio.get_event_loop().run_until_complete(client.start())
 ```
