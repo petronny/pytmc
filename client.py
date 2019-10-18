@@ -10,10 +10,10 @@ logger = logging.getLogger('pytmc')
 
 class Protocol(websockets.WebSocketClientProtocol):
 
-    #async def ping(self, data=None):
-    #    logger.debug('recv ping')
-    #    pong = await super().ping(data=data)
-    #    await pong
+    async def ping(self, data=None):
+        logger.debug('recv ping')
+        pong = await super().ping(data=data)
+        await pong
 
     #async def pong(self, data=b''):
     #    logger.debug('send pong')
